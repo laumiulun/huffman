@@ -1,17 +1,3 @@
-/**
- * This is an implementation of Huffman coding.
- *
- * The core algorithm is taken from the CLR book (Introduction of Algorithms),
- * Chapter 16.3, and directly used to implement the 'build_tree()' routine.
- *
- * After the tree is built, a code table that maps a character to a binary
- * code is built from the tree, and used for encoding text. Decoding is done
- * by traversing the Huffman tree, as prescribed by the algorithm.
- *
- * Binary codes are represented by std::vector<bool>, which is a specialized
- * vector that optimizes space.
- */
-
 #include <vector>
 #include <queue>
 #include <map>
@@ -45,10 +31,7 @@ struct HuffmanTree {
     };
 };
 
-/**
- * Builds a Huffman Tree from an input of alphabet C, where C is a vector
- * of (character, frequency) pairs.
- */
+// Build a frequency table tree
 HuffmanTree *build_tree(vector< pair<char, unsigned> > &alph) {
     // First build a min-heap
     // Build leaf nodes first
@@ -127,11 +110,11 @@ map<char, code_t> build_lookup_table(HuffmanTree *htree) {
         } else {
             // Leaf node: contains the character
             lookup.insert(make_pair(node->c, code));
-            cout << "(" << node->c << ", ";
-            for (unsigned i = 0; i < code.size(); i++) {
-                cout << code[i];
-            }
-            cout << ")" << endl;
+            //cout << "(" << node->c << ", ";
+            //for (unsigned i = 0; i < code.size(); i++) {
+            //    cout << code[i];
+            //}
+            //cout << ")" << endl;
         }
     }
 
@@ -295,51 +278,42 @@ void hexdump(const unsigned char *bytes, int nbytes) {
     }
 }
 
-string tests[] = {
-    "Declaration of Independence",
-    "We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.--That to secure these rights, Governments are instituted among Men, deriving their just powers from the consent of the governed, --That whenever any Form of Government becomes destructive of these ends, it is the Right of the People to alter or to abolish it, and to institute new Government, laying its foundation on such principles and organizing its powers in such form, as to them shall seem most likely to effect their Safety and Happiness."
-};
+// string tests[] = {
+//     "Declaration of Independence",
+//     "We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.--That to secure these rights, Governments are instituted among Men, deriving their just powers from the consent of the governed, --That whenever any Form of Government becomes destructive of these ends, it is the Right of the People to alter or to abolish it, and to institute new Government, laying its foundation on such principles and organizing its powers in such form, as to them shall seem most likely to effect their Safety and Happiness."
+// };
 
-// int main() {
-//     for (unsigned i = 0; i < sizeof(tests)/sizeof(tests[0]); i++) {
-//         string s = tests[i];
-//         cout << "\n>>>>>>> test " << i << " >>>>>>>" << endl;
-//         vector< pair<char, unsigned> > cfvec = make_freq_table(s);
-//         HuffmanTree *htree = build_tree(cfvec);
-//         //print_tree(htree);
-//         codetable ctbl = build_lookup_table(htree);
-//         code_t t = encode(s, ctbl);
-//         cout << "original:" << endl << s << endl;
-//         cout << "encoded (compression ratio: "
-//              << (t.size() + 7) / 8 << "/" << s.size() << " or "
-//              << ((float)(t.size() / 8) / s.size()) << "):" << endl;
-//         string packed = bitvec_to_string(t);
-//         hexdump((unsigned char *)(packed.c_str()), packed.size());
-//
-//         // Decode
-//         code_t t1 = string_to_bitvec(packed);
-//         assert(std::equal(t.begin(), t.end(), t1.begin()));
-//         string s1 = decode(t1, htree);
-//         //cout << "decoded:\n" << s1 << endl;
-//         assert(s1 == s);
-//         delete htree;
-//     }
-// }
-
-int main(){
-  for (unsigned i = 0; i < sizeof(tests)/sizeof(tests[0]); i++){
-    string s = tests[i];
-    cout << "test:" << i << endl;
-    vector< pair<char, unsigned>> cfvec = make_freq_table(s);
-    cout << "Size: " << s.size() << endl;
-    HuffmanTree *htree = build_tree(cfvec);
-    print_tree(htree);
-    codetable ctbl = build_lookup_table(htree);
-
-  }
-
-
-
-
-
+int main (){
+  string tests;
+  cout << "Please enter phase: ";
+  getline(cin, tests);
+  string s = tests;
+  vector< pair<char, unsigned>> cfvec = make_freq_table(s);
+  //cout << "Size: " << s.size() << endl;
+  HuffmanTree *htree = build_tree(cfvec);
+  //print_tree(htree);
+  codetable ctbl = build_lookup_table(htree);
+  code_t t = encode(s, ctbl);
+  cout << "original:" << endl << s << endl;
+  cout << "encoded (compression ratio: "
+               << (t.size() + 7) / 8 << "/" << s.size() << " or "
+               << ((float)(t.size() / 8) / s.size()) << "):" << endl;
 }
+
+// int main(){
+//   for (unsigned i = 0; i < sizeof(tests)/sizeof(tests[0]); i++){
+//     string s = tests[i];
+//     cout << "test:" << i << endl;
+//     vector< pair<char, unsigned>> cfvec = make_freq_table(s);
+//     //cout << "Size: " << s.size() << endl;
+//     HuffmanTree *htree = build_tree(cfvec);
+//     //print_tree(htree);
+//     codetable ctbl = build_lookup_table(htree);
+//     code_t t = encode(s, ctbl);
+//     //cout << "original:" << endl << s << endl;
+//     cout << "encoded (compression ratio: "
+//                  << (t.size() + 7) / 8 << "/" << s.size() << " or "
+//                  << ((float)(t.size() / 8) / s.size()) << "):" << endl;
+//
+//   }
+// }

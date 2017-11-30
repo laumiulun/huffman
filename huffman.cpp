@@ -278,11 +278,6 @@ void hexdump(const unsigned char *bytes, int nbytes) {
     }
 }
 
-// string tests[] = {
-//     "Declaration of Independence",
-//     "We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.--That to secure these rights, Governments are instituted among Men, deriving their just powers from the consent of the governed, --That whenever any Form of Government becomes destructive of these ends, it is the Right of the People to alter or to abolish it, and to institute new Government, laying its foundation on such principles and organizing its powers in such form, as to them shall seem most likely to effect their Safety and Happiness."
-// };
-
 int main (){
   string tests;
   cout << "Please enter phase: ";
@@ -294,26 +289,8 @@ int main (){
   //print_tree(htree);
   codetable ctbl = build_lookup_table(htree);
   code_t t = encode(s, ctbl);
-  cout << "original:" << endl << s << endl;
+  cout << "Original:" << endl << s << endl;
   cout << "encoded (compression ratio: "
                << (t.size() + 7) / 8 << "/" << s.size() << " or "
                << ((float)(t.size() / 8) / s.size()) << "):" << endl;
 }
-
-// int main(){
-//   for (unsigned i = 0; i < sizeof(tests)/sizeof(tests[0]); i++){
-//     string s = tests[i];
-//     cout << "test:" << i << endl;
-//     vector< pair<char, unsigned>> cfvec = make_freq_table(s);
-//     //cout << "Size: " << s.size() << endl;
-//     HuffmanTree *htree = build_tree(cfvec);
-//     //print_tree(htree);
-//     codetable ctbl = build_lookup_table(htree);
-//     code_t t = encode(s, ctbl);
-//     //cout << "original:" << endl << s << endl;
-//     cout << "encoded (compression ratio: "
-//                  << (t.size() + 7) / 8 << "/" << s.size() << " or "
-//                  << ((float)(t.size() / 8) / s.size()) << "):" << endl;
-//
-//   }
-// }
